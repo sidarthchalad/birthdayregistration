@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Invitation</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
+
+.container{
+    background:#fff;
+    padding:30px;
+    border-radius:20px;
+    width:90%;
+    max-width:500px;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,.2);
+}
+
+input{
+    width:80%;
+    padding:12px;
+    font-size:16px;
+    margin:15px 0;
+}
+
+button{
+    padding:10px 20px;
+    margin:5px;
+    cursor:pointer;
+    border:none;
+    border-radius:8px;
+    color:white;
+    font-size:16px;
+}
+
+.register{
+    background:#ff4081;
+}
+
+.clear{
+    background:#f44336;
+}
+
+ul{
+    list-style:none;
+    padding:0;
+}
+
+li{
+    background:#ffe4ec;
+    padding:10px;
+    margin:5px 0;
+    border-radius:8px;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<h1>🎉 Birthday Invitation 🎉</h1>
+
+<p>
+Join us for my sister's birthday!
+</p>
+
+<p>
+📅 25 July 2026<br>
+🕖 7:00 PM<br>
+📍 Our Home
+</p>
+
+<input type="text" id="name" placeholder="Enter your name">
+
+<br>
+
+<button class="register" id="registerBtn">Register</button>
+<button class="clear" id="clearBtn">Clear All</button>
+
+<p id="message"></p>
+
+<h3>Registered Friends</h3>
+
+<ul id="list"></ul>
+
+</div>
+
+<script>
+
+let names=[];
+
+// Load saved names
+const saved=localStorage.getItem("birthdayNames");
+
+if(saved){
+    names=JSON.parse(saved);
+}
+
+const list=document.getElementById("list");
+const msg=document.getElementById("message");
+const input=document.getElementById("name");
+
+function showNames(){
+
+    list.innerHTML="";
+
+    for(let i=0;i<names.length;i++){
+
+        const li=document.createElement("li");
+        li.textContent=names[i];
+        list.appendChild(li);
+
+    }
+
+}
+
+showNames();
+
+// Register button
+document.getElementById("registerBtn").addEventListener("click",function(){
+
+    const name=input.value.trim();
+
+    if(name===""){
+        alert("Please enter your name.");
+        return;
+    }
+
+    names.push(name);
+
+    localStorage.setItem("birthdayNames",JSON.stringify(names));
+
+    showNames();
+
+    msg.textContent="✅ Thank you, "+name+"!";
+
+    input.value="";
+
+});
+
+// Clear button
+document.getElementById("clearBtn").addEventListener("click",function(){
+
+    if(confirm("Delete all registrations?")){
+
+        names=[];
+
+        localStorage.removeItem("birthdayNames");
+
+        showNames();
+
+        msg.textContent="🗑 All registrations deleted.";
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
